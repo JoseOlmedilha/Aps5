@@ -6,18 +6,22 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class ChatServer {
+
+	static ArrayList<String> listaUsuarios = new ArrayList<String>();
+	static ArrayList<PrintWriter> printWriters = new ArrayList<PrintWriter>();
 
 	public static void main(String[] args) throws Exception {
 		System.out.println("Aguardando novo usuario...");
 		ServerSocket ss = new ServerSocket(9086);
-		
-		while (true) { //loop para conectar usuarios ao server
+
+		while (true) { // loop para conectar usuarios ao server
 			Socket usuario = ss.accept();
-			System.out.println("Usuário conectado");
-			
-			ManipuladorConversa conversa = new ManipuladorConversa(usuario); 
+			System.out.println("Usuário conectado!");
+
+			ManipuladorConversa conversa = new ManipuladorConversa(usuario);
 			conversa.start();
 		}
 
@@ -25,28 +29,60 @@ public class ChatServer {
 
 }
 
-class ManipuladorConversa extends Thread{
-	
+class ManipuladorConversa extends Thread {
+
 	Socket usuarioConversa;
 	BufferedReader entrada;
 	PrintWriter saida;
-	
-	public ManipuladorConversa(Socket usuarioConversa) throws IOException{
+	String nome;
+
+	public ManipuladorConversa(Socket usuarioConversa) throws IOException {
 		this.usuarioConversa = usuarioConversa;
 	}
-	
-	
+
 	public void run() {
 		try {
-			
+
 			entrada = new BufferedReader(new InputStreamReader(usuarioConversa.getInputStream()));
 			saida = new PrintWriter(usuarioConversa.getOutputStream());
-			
-		}catch(Exception e) {
-			
-			
-		}	
-	}
+
+			int contador = 0;
+			while (true) {
+				
+				if (contador > 0) {
+					saida.println("Nome já existente ");
+				} else {
+					saida.println("Nome disponivel: ");
+				}
+				
+				nome = entrada.readLine();
+
+				if (nome == null) {
+					return;
+				}
+
+				if (!ChatServer.listaUsuarios.contains(nome)) {
+					ChatServer.listaUsuarios.add(nome);
+					break;
+				}
+
+				contador++;
+			}
+
+		saida.println("Nome aceito");
+		ChatServer.printWriters.add(saida);
+
+		} catch (Exception e) {
+			System.out.println("Erro no servidor " + e.getMessage());
+			e.printStackTrace();
+		}
 	
+	
+	
+	}
+
+
+
+
 
 }
