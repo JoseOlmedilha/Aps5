@@ -44,15 +44,15 @@ class ManipuladorConversa extends Thread {
 		try {
 
 			entrada = new BufferedReader(new InputStreamReader(usuarioConversa.getInputStream()));
-			saida = new PrintWriter(usuarioConversa.getOutputStream());
+			saida = new PrintWriter(usuarioConversa.getOutputStream(), true);
 
 			int contador = 0;
 			while (true) {
 				
 				if (contador > 0) {
-					saida.println("Nome já existente ");
+					saida.println("Nome já existente");
 				} else {
-					saida.println("Nome disponivel: ");
+					saida.println("Nome disponivel");
 				}
 				
 				nome = entrada.readLine();

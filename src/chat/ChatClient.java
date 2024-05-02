@@ -45,10 +45,22 @@ public class ChatClient {
 		saida = new PrintWriter(usuario.getOutputStream(),  true);
 		
 		while (true) {
+			String msg = entrada.readLine();
 			
-		}
-		
-		
+			if(msg.equals("Nome disponivel")) {
+				String nome =JOptionPane.showInputDialog(chatJanela, "Nome do usuário:", "Informação", JOptionPane.PLAIN_MESSAGE);
+				
+				saida.println(nome);
+			}else if (msg.equals("Nome já existente")) {
+				String nome =JOptionPane.showInputDialog(chatJanela, "Informe outro nome de usuário", "Nome duplicado", JOptionPane.WARNING_MESSAGE);
+			
+				saida.println(nome);
+			}else if(msg.equals("Nome aceito")) {
+				chatNovaMensagem.setEditable(true);
+			
+			}
+			
+		}	
 	}
 	
 	
