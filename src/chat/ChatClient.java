@@ -1,6 +1,8 @@
 package chat;
 
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -34,6 +36,9 @@ public class ChatClient {
 		chatMensagens.setEditable(false);
 		chatNovaMensagem.setEditable(false);
 		
+		chatBotaoEnviar.addActionListener(new Listener());
+		chatNovaMensagem.addActionListener(new Listener());
+		
 	}
 
 	
@@ -58,6 +63,8 @@ public class ChatClient {
 			}else if(msg.equals("Nome aceito")) {
 				chatNovaMensagem.setEditable(true);
 			
+			} else {
+				chatMensagens.append(msg + "\n");
 			}
 			
 		}	
@@ -81,4 +88,18 @@ public class ChatClient {
 		
 	}
 
+}
+
+
+class Listener implements ActionListener {
+	
+	@Override
+	public void  actionPerformed(ActionEvent e) {
+		ChatClient.saida.println(ChatClient.chatNovaMensagem.getText());
+		ChatClient.chatNovaMensagem.setText("");
+		
+		
+	}
+	
+	
 }
