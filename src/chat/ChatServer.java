@@ -69,8 +69,25 @@ class ManipuladorConversa extends Thread {
 				contador++;
 			}
 
-		saida.println("Nome aceito");
-		ChatServer.printWriters.add(saida);
+			saida.println("Nome aceito " + nome);
+			ChatServer.printWriters.add(saida);
+		
+			
+			while(true){
+				String msg = entrada.readLine();
+			
+				
+				if( msg == null) {
+					return;
+				}
+				
+				for(PrintWriter writer : ChatServer.printWriters) {
+					writer.println(nome + ": " + msg);
+					
+				}
+			}
+			
+			
 
 		} catch (Exception e) {
 			System.out.println("Erro no servidor " + e.getMessage());

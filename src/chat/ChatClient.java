@@ -10,6 +10,7 @@ import java.net.Socket;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -23,9 +24,11 @@ public class ChatClient {
 	static JButton chatBotaoEnviar = new JButton("Enviar");
 	static BufferedReader entrada;
 	static PrintWriter saida;
+	static JLabel chatUsuarioLogado = new JLabel(""); 
 	
 	public ChatClient() {
 		chatJanela.setLayout(new FlowLayout());
+		chatJanela.add(chatUsuarioLogado);
 		chatJanela.add(new JScrollPane(chatMensagens));
 		chatJanela.add(chatNovaMensagem);
 		chatJanela.add(chatBotaoEnviar);
@@ -60,8 +63,9 @@ public class ChatClient {
 				String nome =JOptionPane.showInputDialog(chatJanela, "Informe outro nome de usuário", "Nome duplicado", JOptionPane.WARNING_MESSAGE);
 			
 				saida.println(nome);
-			}else if(msg.equals("Nome aceito")) {
+			}else if(msg.startsWith("Nome aceito")) {
 				chatNovaMensagem.setEditable(true);
+				chatUsuarioLogado.setText("Você está logado como: " + msg.substring(11));
 			
 			} else {
 				chatMensagens.append(msg + "\n");
